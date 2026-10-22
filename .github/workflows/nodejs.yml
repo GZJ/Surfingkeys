@@ -13,12 +13,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: ['22.23.4', '24.22.1']
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6 (Node.js 24 action runtime)
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install and build
@@ -27,3 +27,5 @@ jobs:
         npm run build
       env:
         CI: true
+        # Jest uses jsdom; Chromium is only used by the separate interactive nvim harness.
+        PUPPETEER_SKIP_DOWNLOAD: true
